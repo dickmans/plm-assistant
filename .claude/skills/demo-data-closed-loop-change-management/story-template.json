@@ -1,0 +1,952 @@
+{
+  "_readme": "Worked example (rooftop chiller condenser fan assembly, HVAC, in-house production defect). Copy to work/<name>-story.json, replace ALL content so it matches the real component, industry and scenario, keep the structure, stage ids and transition names. Keys starting with _ are ignored. Replace the placeholder links in vars with links from /api/closedloop/context. The role variables default to the current user; set them to other users (email or name) if the user wants more people involved. Impersonation: set \"impersonation\": true to perform every step as the user named in \"as\" (on a process, a stage, a task or a task transition; tasks default to their ASSIGNEE). Roles that are \"@me\" always run as the login user. Needs the Server-to-Server app from setup. Set it to false when the user does not want impersonation.",
+  "name": "chiller-fan-demo",
+  "scenario": "in-house-defect",
+  "impersonation": false,
+  "vars": {
+    "component": "/api/v3/workspaces/57/items/<dmsId>",
+    "product": "/api/v3/workspaces/95/items/<dmsId>",
+    "supplier": "/api/v3/workspaces/14/items/<dmsId>",
+    "template": "/api/v3/workspaces/81/items/<dmsId>",
+    "quality": "@me",
+    "engineer": "@me",
+    "planner": "@me",
+    "approver": "@me"
+  },
+  "qip": {
+    "create": {
+      "TITLE": "Final inspection of condenser fan assembly",
+      "INSPECTION_TYPE": "Final Inspection",
+      "INSPECTED_ITEM": "$component",
+      "PREVIOUS_ITEM": "$component",
+      "NOTES": "Dimensional and fit checks on every condenser fan assembly before it is released to the chiller line. Focus on the hub bore and the motor mounting pattern, because both drive vibration and noise in the field.",
+      "LOT_SIZE": 10,
+      "AQL": "0.015",
+      "INSPECTION_LEVEL": "General Inspection II",
+      "SAMPLING_METHOD": "Single Sampling",
+      "IMAGE_1": "@component",
+      "IMAGE_2": {
+        "generate": {
+          "type": "callout",
+          "title": "Inspection points of the condenser fan assembly",
+          "subtitle": "Where the plan measures",
+          "accent": "#0b6bcb",
+          "legendTitle": "INSPECTION POINTS",
+          "callouts": [
+            {
+              "x": 0.5,
+              "y": 0.52,
+              "label": "Hub bore diameter (caliper)",
+              "color": "#0b6bcb"
+            },
+            {
+              "x": 0.3,
+              "y": 0.32,
+              "label": "Motor mounting hole position (CMM)",
+              "color": "#0b6bcb"
+            },
+            {
+              "x": 0.72,
+              "y": 0.75,
+              "label": "Overall height (caliper)",
+              "color": "#0b6bcb"
+            }
+          ]
+        }
+      },
+      "IMAGE_3": {
+        "generate": {
+          "type": "card",
+          "title": "Sampling and acceptance",
+          "subtitle": "General inspection II, single sampling",
+          "accent": "#0b6bcb",
+          "lines": [
+            "## Lot of 10 fan assemblies",
+            "Sample size 3, AQL 0.015",
+            "Accept the lot with 0 failures, reject with 1 or more",
+            "Any rejected lot is put on hold and a Non Conformance is raised"
+          ]
+        }
+      },
+      "IMAGE_1_REMARKS": "Overall view of the fan assembly",
+      "IMAGE_2_REMARKS": "Inspection points marked on the assembly",
+      "IMAGE_3_REMARKS": "Sampling plan and acceptance rule"
+    },
+    "grid": [
+      {
+        "ID": "101",
+        "REFERENCE": "Hub bore diameter",
+        "DESCRIPTION": "Measure the hub bore diameter on the motor side to confirm the shaft fit",
+        "MEASUREMENT_DEVICE": "Caliper",
+        "UNITS": "mm",
+        "NOMINAL": 25.0,
+        "LOWER_TOLERANCE": 0.0,
+        "UPPER_TOLERANCE": 0.02
+      },
+      {
+        "ID": "102",
+        "REFERENCE": "Motor mounting hole position",
+        "DESCRIPTION": "Verify the position of the motor mounting holes against the drawing",
+        "MEASUREMENT_DEVICE": "CMM",
+        "UNITS": "mm",
+        "NOMINAL": 100.0,
+        "LOWER_TOLERANCE": 0.5,
+        "UPPER_TOLERANCE": 0.5
+      },
+      {
+        "ID": "103",
+        "REFERENCE": "Blade tip clearance",
+        "DESCRIPTION": "Measure the gap between the blade tip and the fan ring",
+        "MEASUREMENT_DEVICE": "Feeler Gauge",
+        "UNITS": "mm",
+        "NOMINAL": 3.0,
+        "LOWER_TOLERANCE": 0.5,
+        "UPPER_TOLERANCE": 0.5
+      },
+      {
+        "ID": "104",
+        "REFERENCE": "Overall height",
+        "DESCRIPTION": "Measure the overall height of the assembly",
+        "MEASUREMENT_DEVICE": "Caliper",
+        "UNITS": "mm",
+        "NOMINAL": 95.0,
+        "LOWER_TOLERANCE": 0.05,
+        "UPPER_TOLERANCE": 0.05
+      },
+      {
+        "ID": "105",
+        "REFERENCE": "Blade thickness",
+        "DESCRIPTION": "Measure the blade thickness at the root",
+        "MEASUREMENT_DEVICE": "Micrometer",
+        "UNITS": "mm",
+        "NOMINAL": 2.0,
+        "LOWER_TOLERANCE": 0.05,
+        "UPPER_TOLERANCE": 0.05
+      },
+      {
+        "ID": "106",
+        "REFERENCE": "Overall diameter",
+        "DESCRIPTION": "Measure the overall diameter of the fan",
+        "MEASUREMENT_DEVICE": "Tape Measure",
+        "UNITS": "mm",
+        "NOMINAL": 800.0,
+        "LOWER_TOLERANCE": 1.0,
+        "UPPER_TOLERANCE": 1.0
+      }
+    ],
+    "stages": [
+      {
+        "transition": "Approve for Use",
+        "comment": "Plan reviewed by quality engineering and approved for use on the chiller line",
+        "id": "approve-plan"
+      }
+    ],
+    "as": "$quality"
+  },
+  "qi": {
+    "create": {
+      "RELATED_QIP": "$qip",
+      "INSPECTED_ITEM": "$component",
+      "PREVIOUS_QIP": "$qip",
+      "PERFORMED_BY": "Internal QA",
+      "DEADLINE": "@today-14",
+      "SERIAL_NUMBERS": "FA-24-0311, FA-24-0312, FA-24-0313",
+      "BATCH_LOTS": "LOT-2411-A",
+      "NOTES": "Final inspection of the first lot built with the new bearing supplier. Three samples measured.",
+      "IMAGE": {
+        "generate": {
+          "type": "measurement-chart",
+          "source": "inspection",
+          "title": "Final inspection result, lot LOT-2411-A",
+          "subtitle": "3 samples measured, general inspection II"
+        }
+      }
+    },
+    "results": {
+      "101": {
+        "ACTUAL": 25.06,
+        "COMMENTS": "Bore is oversize on all three samples"
+      },
+      "102": {
+        "ACTUAL": 101.4,
+        "COMMENTS": "Mounting pattern is shifted towards the rim"
+      },
+      "103": {
+        "ACTUAL": 3.2
+      },
+      "104": {
+        "ACTUAL": 94.98
+      },
+      "105": {
+        "ACTUAL": 2.01
+      },
+      "106": {
+        "ACTUAL": 800.4
+      }
+    },
+    "stages": [
+      {
+        "transition": "Close",
+        "comment": "Two characteristics out of tolerance on all samples. The lot is on hold and a Non Conformance is raised.",
+        "id": "close-inspection",
+        "fields": {
+          "PERFORMED_BY": "Internal QA",
+          "DEADLINE": "@today-14",
+          "SERIAL_NUMBERS": "FA-24-0311, FA-24-0312, FA-24-0313",
+          "BATCH_LOTS": "LOT-2411-A",
+          "NOTES": "Final inspection of the first lot built with the new bearing supplier. Three samples measured.",
+          "IMAGE": {
+            "generate": {
+              "type": "measurement-chart",
+              "source": "inspection",
+              "title": "Final inspection result, lot LOT-2411-A",
+              "subtitle": "3 samples measured, general inspection II"
+            }
+          }
+        }
+      }
+    ],
+    "as": "$quality"
+  },
+  "nc": {
+    "stages": [
+      {
+        "fields": {
+          "SEVERITY": "Level 1",
+          "NONCONFORMING_ITEM": "$component",
+          "PREVIOUS_NONCONFORMING_ITEM": "$component",
+          "AFFECTED_QUANTITY": 24,
+          "DESCRIPTION": [
+            "Hub bore oversize by 0.04 mm above the upper limit on all inspected samples.",
+            "Motor mounting hole pattern shifted by 1.4 mm towards the rim.",
+            "Both defects were found in the final inspection of lot LOT-2411-A."
+          ],
+          "RELATED_SUPPLIER": "$supplier",
+          "ORDER_NUMBER": "PO-2411-0178",
+          "INSPECTION_TYPE": "Final Inspection",
+          "ORIGINATED_BY": "Internal QA",
+          "IMAGE_1": {
+            "generate": {
+              "type": "callout",
+              "title": "Defect location on the fan assembly",
+              "subtitle": "Non conformance, lot LOT-2411-A",
+              "callouts": [
+                {
+                  "x": 0.5,
+                  "y": 0.52,
+                  "label": "Hub bore oversize by 0.04 mm",
+                  "color": "#d92d20"
+                },
+                {
+                  "x": 0.3,
+                  "y": 0.32,
+                  "label": "Motor mounting pattern shifted 1.4 mm to the rim",
+                  "color": "#f08c00"
+                }
+              ]
+            }
+          },
+          "IMAGE_2": {
+            "generate": {
+              "type": "measurement-chart",
+              "source": "inspection",
+              "title": "Measured values against tolerance",
+              "subtitle": "Final inspection, lot LOT-2411-A"
+            }
+          },
+          "IMAGE_3": {
+            "generate": {
+              "type": "trend-chart",
+              "title": "Hub bore drift over the last 14 lots",
+              "subtitle": "Bore diameter, caliper",
+              "points": [
+                25.008,
+                25.011,
+                25.01,
+                25.015,
+                25.014,
+                25.019,
+                25.022,
+                25.027,
+                25.031,
+                25.038,
+                25.041,
+                25.05,
+                25.055,
+                25.06
+              ],
+              "labels": [
+                "L1",
+                "L2",
+                "L3",
+                "L4",
+                "L5",
+                "L6",
+                "L7",
+                "L8",
+                "L9",
+                "L10",
+                "L11",
+                "L12",
+                "L13",
+                "L14"
+              ],
+              "usl": 25.02,
+              "lsl": 25.0,
+              "nominal": 25.01,
+              "unit": "mm",
+              "xLabel": "PRODUCTION LOT"
+            }
+          },
+          "IMAGE_4": {
+            "generate": {
+              "type": "card",
+              "title": "Quarantine tag",
+              "subtitle": "Lot LOT-2411-A",
+              "badge": {
+                "text": "ON HOLD",
+                "color": "#d92d20"
+              },
+              "accent": "#d92d20",
+              "lines": [
+                "## Do not use or ship",
+                "24 units in the quarantine area, rack Q-07",
+                "Reason: hub bore and mounting pattern out of tolerance",
+                "Release only by quality engineering after sort and rework"
+              ]
+            }
+          },
+          "IMAGE_1_COMMENTS": "Defect locations marked on the assembly",
+          "IMAGE_2_COMMENTS": "Measured values against tolerance",
+          "IMAGE_3_COMMENTS": "Bore diameter trend over 14 lots, drifting out of tolerance",
+          "IMAGE_4_COMMENTS": "Quarantine tag on the rejected lot"
+        },
+        "transition": "Submit For Review",
+        "comment": "Non conformance documented with measurement evidence. Please review.",
+        "id": "submit-nc"
+      },
+      {
+        "fields": {
+          "BUSINESS_IMPACT": "Fans with an oversize bore run out of balance, which causes vibration and noise at commissioning. Without action, 24 units per week cannot ship and field returns are likely.",
+          "CONTAINMENT_ACTION": "All units of lot LOT-2411-A are quarantined. Incoming and in-process stock from the same supplier lot is being sorted. Shipments are paused until the sort is complete.",
+          "DISPOSITION_APPROVER": "$approver",
+          "DISPOSITION": "2 - Repair",
+          "DISPOSITION_NOTES": "Rework the bore with a sleeve insert and re-drill the mounting pattern on the fixture. Re-inspect every reworked unit. A CAPA is needed because the drawing tolerances allow this drift.",
+          "INITIATE_CAPA": "Yes"
+        },
+        "transition": "Approve for Disposition",
+        "comment": "Severity confirmed. Moving to disposition.",
+        "id": "approve-disposition",
+        "as": "$approver"
+      },
+      {
+        "fields": {
+          "DISPOSITION": "2 - Repair",
+          "DISPOSITION_NOTES": "Rework the bore with a sleeve insert and re-drill the mounting pattern on the fixture. Re-inspect every reworked unit. A CAPA is needed because the drawing tolerances allow this drift.",
+          "INITIATE_CAPA": "Yes"
+        },
+        "transition": "Initiate CAPA",
+        "comment": "Disposition approved. Systemic cause suspected, so a CAPA is required.",
+        "id": "initiate-capa"
+      }
+    ],
+    "as": "$quality"
+  },
+  "capa": {
+    "stages": [
+      {
+        "fields": {
+          "TITLE": "Fan hub bore and mounting pattern out of tolerance",
+          "TYPE_OF_ACTION": "Corrective",
+          "TEAM": [
+            "$quality",
+            "$engineer",
+            "$planner",
+            "$approver"
+          ],
+          "RELATED_SUPPLIER": "$supplier"
+        },
+        "transition": "Submit",
+        "comment": "CAPA opened from the Non Conformance",
+        "id": "submit-capa"
+      },
+      {
+        "fields": {
+          "PROBLEM_STATEMENT": "Condenser fan assemblies fail final inspection because the hub bore is oversize and the motor mounting pattern is shifted. Affected fans vibrate and are noisy in the chiller.",
+          "OBJECTIVE": "Stop the drift in bore diameter and hole position so that every fan assembly passes final inspection without rework.",
+          "SCOPE": "All condenser fan assemblies of the rooftop chiller range, from the current supplier and any future second source.",
+          "NOTES_DEFINE": "Two defects on three of three samples. First seen in lot LOT-2411-A after a switch of the bearing supplier.",
+          "TEAM": [
+            "$quality",
+            "$engineer",
+            "$planner",
+            "$approver"
+          ]
+        },
+        "transition": "Proceed to Measurement",
+        "comment": "Problem defined",
+        "id": "to-measurement"
+      },
+      {
+        "fields": {
+          "POSSIBLE_CAUSES": [
+            "Tool wear on the boring fixture",
+            "Drawing tolerance on the hub bore is too loose",
+            "Mounting holes are located from a non-datum surface",
+            "Different material hardness from the new supplier"
+          ],
+          "NOTES_MEASURE": "Measured 30 fans from three lots on the CMM. Bore diameter and hole position drift together, which points to a design and fixturing cause rather than random wear."
+        },
+        "transition": "Proceed to Analysis",
+        "comment": "Measurements collected",
+        "id": "to-analysis"
+      },
+      {
+        "fields": {
+          "ROOT_CAUSE": "The hub drawing allows a wide bore tolerance and locates the motor mounting holes from a surface that is not a datum. Suppliers can meet the drawing and still produce a part that does not fit.",
+          "ROOT_CAUSE_CODE": "Other",
+          "NOTES_ANALYZE": "A 5-why and a tolerance stack-up confirm the cause. The design must change; process tweaks at the supplier only mask the problem."
+        },
+        "transition": "Proceed to Improvement",
+        "comment": "Root cause confirmed",
+        "id": "to-improvement"
+      },
+      {
+        "fields": {
+          "ACTION_TAKEN": [
+            "Tighten the hub bore to an H7 fit",
+            "Reference the motor mounting pattern to the bore axis",
+            "Add a locating feature to the hub",
+            "Update the inspection plan with the new tolerances"
+          ],
+          "CREATE_CHANGE_REQUEST": "Yes",
+          "NOTES_IMPROVE": "The permanent fix is a design change of the hub. A Change Request starts the engineering work."
+        },
+        "transition": "Proceed to Control",
+        "comment": "Corrective action needs a design change. Change Request is raised.",
+        "id": "to-control"
+      },
+      {
+        "fields": {
+          "CONTROL_SUMMARY": [
+            "Inspect the bore and the hole position on every lot",
+            "Review supplier capability data every quarter",
+            "Verify the effectiveness after the first three lots with the new drawing"
+          ],
+          "NOTES_CONTROL": "The CAPA stays open until the Change Order is implemented and the first lots pass final inspection."
+        },
+        "id": "control-notes"
+      }
+    ],
+    "as": "$quality"
+  },
+  "cr": {
+    "taskPlan": [
+      {
+        "ID": "10",
+        "TITLE": "Root cause analysis with design engineering",
+        "DESCRIPTION": "Review the CAPA findings and the CMM data, run the tolerance stack-up and confirm that the drawing allows the defect.",
+        "PRIORITY": "1 / High",
+        "ASSIGNEE": "$engineer",
+        "REVIEWER": "$quality",
+        "TARGET_START_DATE": "@today",
+        "TARGET_COMPLETION_DATE": "@today+3",
+        "TARGET_EFFORT": 12
+      },
+      {
+        "ID": "20",
+        "DEPENDS_ON": "10",
+        "TITLE": "Assess impact on production schedule and stock",
+        "DESCRIPTION": "Production planning checks open orders, quarantined and in-process stock and the options for a cutover.",
+        "PRIORITY": "2 / Medium",
+        "ASSIGNEE": "$planner",
+        "REVIEWER": "$quality",
+        "TARGET_START_DATE": "@today+3",
+        "TARGET_COMPLETION_DATE": "@today+5",
+        "TARGET_EFFORT": 6
+      }
+    ],
+    "tasks": [
+      {
+        "match": "Root cause analysis",
+        "fields": {
+          "ASSIGNEE": "$engineer",
+          "NEW_STATUS_UPDATE": "Engineering reviewed the CAPA findings and the CMM data.",
+          "COMPLETION_REMARKS": "Root cause is a drawing tolerance issue: the hub bore and the mounting pattern need a design change.",
+          "IMAGE_1": {
+            "generate": {
+              "type": "card",
+              "title": "Root cause summary",
+              "subtitle": "Engineering review",
+              "accent": "#0b6bcb",
+              "lines": [
+                "## Why does the part drift out of tolerance?",
+                "The drawing allows a wide hub bore tolerance",
+                "Mounting holes are located from a non-datum surface",
+                "Tolerance stack-up shows a possible 0.12 mm misfit within the drawing limits"
+              ]
+            }
+          },
+          "IMAGE_1_COMMENT": "Root cause summary from the engineering review"
+        },
+        "transitions": [
+          {
+            "name": "Acknowledge",
+            "comment": "Engineering takes over the root cause analysis"
+          },
+          {
+            "name": "Submit for review",
+            "comment": "Root cause analysis is done, please review"
+          },
+          {
+            "name": "Approve & Finish Task",
+            "comment": "Reviewed and approved",
+            "as": "$quality"
+          }
+        ]
+      },
+      {
+        "match": "impact on production",
+        "fields": {
+          "ASSIGNEE": "$planner",
+          "NEW_STATUS_UPDATE": "Production planning checked open orders and the quarantined stock.",
+          "COMPLETION_REMARKS": "Two production weeks are affected; rework of the quarantined stock fits into the plan."
+        },
+        "transitions": [
+          {
+            "name": "Acknowledge",
+            "comment": "Planning checks the schedule"
+          },
+          {
+            "name": "Submit for review",
+            "comment": "Impact on the production schedule is assessed, please review"
+          },
+          {
+            "name": "Approve & Finish Task",
+            "comment": "Reviewed and approved",
+            "as": "$quality"
+          }
+        ]
+      }
+    ],
+    "stages": [
+      {
+        "fields": {
+          "TITLE": "Tighten fan hub bore tolerance and re-reference mounting pattern",
+          "DESCRIPTION": "Final inspection and the CAPA show that the condenser fan hub drawing allows a bore and mounting pattern that do not fit reliably. Change the hub design to an H7 bore and locate the mounting holes from the bore axis.",
+          "CHANGE_TEMPLATE": "$template",
+          "PRIORITY": "1 / High",
+          "SOURCE": "Quality",
+          "CHANGE_REASON": "Quality issue found in final inspection and confirmed by the CAPA",
+          "CHANGE_REASON_CODE": "Quality Issue",
+          "AFFECTED_PRODUCT": "$product",
+          "AFFECTED_ITEM": "$component",
+          "AFFECTED_QUANTITY": "24",
+          "SUPPLIER_INVOLVED": "$supplier",
+          "CUSTOMER_IMPACTED": "None so far, shipments are on hold",
+          "CUSTOMER_APPROVAL_REQUIRED": "No",
+          "CAPA": "$capa"
+        },
+        "transition": "Submit for review",
+        "comment": "Change request created from the CAPA",
+        "id": "submit-cr"
+      },
+      {
+        "fields": {
+          "RISKS": "Tighter tolerance may raise the unit cost of the hub. Supplier tooling needs to be updated and the first lots need extra inspection.",
+          "IMAGE_1": {
+            "generate": {
+              "type": "callout",
+              "title": "Design area to change",
+              "subtitle": "Hub and motor mounting pattern",
+              "accent": "#0b6bcb",
+              "legendTitle": "AFFECTED DESIGN AREAS",
+              "callouts": [
+                {
+                  "x": 0.5,
+                  "y": 0.52,
+                  "label": "Hub bore: tighten to H7",
+                  "color": "#0b6bcb"
+                },
+                {
+                  "x": 0.3,
+                  "y": 0.32,
+                  "label": "Mounting pattern: reference to the bore axis",
+                  "color": "#0b6bcb"
+                }
+              ]
+            }
+          },
+          "IMAGE_2": {
+            "generate": {
+              "type": "comparison",
+              "title": "Current versus proposed hub design",
+              "beforeLabel": "CURRENT DRAWING",
+              "afterLabel": "PROPOSED DESIGN",
+              "rows": [
+                {
+                  "label": "Bore tolerance",
+                  "before": 0.1,
+                  "after": 0.021,
+                  "unit": "mm"
+                },
+                {
+                  "label": "Hole position tolerance",
+                  "before": 0.5,
+                  "after": 0.15,
+                  "unit": "mm"
+                },
+                {
+                  "label": "Locating features",
+                  "before": 0,
+                  "after": 2,
+                  "unit": "pcs"
+                }
+              ]
+            }
+          },
+          "IMAGE_1_COMMENTS": "Design areas to change",
+          "IMAGE_2_COMMENTS": "Current drawing against proposed design",
+          "FOLLOWUP_DATE": "@today+14",
+          "FOLLOWUP_COMMENTS": "Review the supplier tooling plan with sourcing",
+          "IMAGE_3": {
+            "generate": {
+              "type": "bar-chart",
+              "title": "Change cost estimate",
+              "subtitle": "By activity",
+              "prefix": "EUR ",
+              "total": 51500,
+              "bars": [
+                {
+                  "label": "Hub redesign",
+                  "value": 18000
+                },
+                {
+                  "label": "Supplier tooling",
+                  "value": 24000
+                },
+                {
+                  "label": "Re-qualification",
+                  "value": 6000
+                },
+                {
+                  "label": "Quality plan update",
+                  "value": 3500
+                }
+              ]
+            }
+          },
+          "IMAGE_4": {
+            "generate": {
+              "type": "closed-loop",
+              "highlight": "cr"
+            }
+          },
+          "IMAGE_3_COMMENTS": "Cost estimate by activity",
+          "IMAGE_4_COMMENTS": "Where this change request sits in the closed loop"
+        },
+        "transition": "Initiate Tasks",
+        "comment": "Engineering input is needed for the root cause analysis",
+        "runTasks": true,
+        "await": {
+          "state": "Review & Impact Analysis"
+        },
+        "id": "initiate-cr-tasks",
+        "taskPlan": true
+      },
+      {
+        "fields": {
+          "ROOT_CAUSE": "Drawing tolerance on the hub bore is too wide and the mounting holes are located from a non-datum surface.",
+          "ROOT_CAUSE_CODE": "Design Issue",
+          "COST_1": 18000,
+          "COST_PER_PART_1": 12.5,
+          "COST_1_COMMENTS": "Redesign of the hub and update of the drawing package",
+          "COST_2": 24000,
+          "COST_PER_PART_2": 16.5,
+          "COST_2_COMMENTS": "New tooling and gauges at the supplier",
+          "COST_3": 6000,
+          "COST_PER_PART_3": 4.0,
+          "COST_3_COMMENTS": "Re-qualification of the first three lots",
+          "COST_4": 3500,
+          "COST_PER_PART_4": 2.5,
+          "COST_4_COMMENTS": "Update of the inspection plan and the work instructions",
+          "EFFORT_1": 60,
+          "CONTACT_1": "$engineer",
+          "EFFORT_1_COMMENTS": "Mechanical redesign of the hub",
+          "EFFORT_2": 16,
+          "CONTACT_2": "$engineer",
+          "EFFORT_2_COMMENTS": "Update of the engineering and manufacturing BOM",
+          "EFFORT_3": 24,
+          "CONTACT_3": "$planner",
+          "EFFORT_3_COMMENTS": "Supplier communication and tooling follow-up",
+          "EFFORT_4": 12,
+          "CONTACT_4": "$quality",
+          "EFFORT_4_COMMENTS": "Quality plan update",
+          "EFFORT_5": 8,
+          "CONTACT_5": "$engineer",
+          "EFFORT_5_COMMENTS": "Validation of the first lot",
+          "ADDITIONAL_APPROVERS": [
+            "$approver"
+          ]
+        },
+        "transition": "Submit to CCB",
+        "comment": "Impact analysis is complete. Please review and approve the change order.",
+        "id": "submit-ccb"
+      },
+      {
+        "transition": "Approve",
+        "comment": "Approved. The root cause is clear and the cost is acceptable.",
+        "await": {
+          "state": "Change Order in progress"
+        },
+        "id": "ccb-approve"
+      }
+    ],
+    "as": "$approver"
+  },
+  "co": {
+    "taskPlan": [
+      {
+        "ID": "10",
+        "TITLE": "Update the hub design and release the drawing",
+        "DESCRIPTION": "Change the hub to an H7 bore, reference the mounting pattern to the bore axis and add the locating feature.",
+        "PRIORITY": "1 / High",
+        "ASSIGNEE": "$engineer",
+        "REVIEWER": "$approver",
+        "ITEMS_TO_CHANGE": [
+          "$component"
+        ],
+        "TARGET_START_DATE": "@today",
+        "TARGET_COMPLETION_DATE": "@today+5",
+        "TARGET_EFFORT": 40
+      },
+      {
+        "ID": "20",
+        "DEPENDS_ON": "10",
+        "TITLE": "Update the EBOM with the new hub revision",
+        "DESCRIPTION": "Replace the hub in the engineering BOM and release the new revision.",
+        "PRIORITY": "2 / Medium",
+        "ASSIGNEE": "$engineer",
+        "ITEMS_TO_CHANGE": [
+          "$component"
+        ],
+        "TARGET_START_DATE": "@today+5",
+        "TARGET_COMPLETION_DATE": "@today+7",
+        "TARGET_EFFORT": 6
+      },
+      {
+        "ID": "30",
+        "DEPENDS_ON": "20",
+        "TITLE": "Update the MBOM, routing and work instructions",
+        "DESCRIPTION": "Production planning aligns the manufacturing BOM, the routing and the work instructions with the new locating feature.",
+        "PRIORITY": "2 / Medium",
+        "ASSIGNEE": "$planner",
+        "ITEMS_TO_CHANGE": [
+          "$component"
+        ],
+        "TARGET_START_DATE": "@today+7",
+        "TARGET_COMPLETION_DATE": "@today+12",
+        "TARGET_EFFORT": 12
+      },
+      {
+        "ID": "40",
+        "DEPENDS_ON": "20",
+        "TITLE": "Qualify the supplier tooling and run the first article inspection",
+        "DESCRIPTION": "Share the released drawing with the supplier and approve the first article of the new hub.",
+        "PRIORITY": "1 / High",
+        "ASSIGNEE": "$quality",
+        "TARGET_START_DATE": "@today+7",
+        "TARGET_COMPLETION_DATE": "@today+21",
+        "TARGET_EFFORT": 24
+      },
+      {
+        "ID": "50",
+        "DEPENDS_ON": "20",
+        "TITLE": "Update the inspection plan and the gauges",
+        "DESCRIPTION": "Adopt the new tolerances in the quality inspection plan and order the matching gauges. This closes the loop back to the inspection.",
+        "PRIORITY": "2 / Medium",
+        "ASSIGNEE": "$quality",
+        "TARGET_START_DATE": "@today+7",
+        "TARGET_COMPLETION_DATE": "@today+14",
+        "TARGET_EFFORT": 8
+      },
+      {
+        "ID": "60",
+        "TITLE": "Plan rework or scrap of the quarantined and in-process stock",
+        "DESCRIPTION": "Production planning decides what is reworked with the sleeve insert and what is scrapped, and updates the inventory.",
+        "PRIORITY": "1 / High",
+        "ASSIGNEE": "$planner",
+        "TARGET_START_DATE": "@today+1",
+        "TARGET_COMPLETION_DATE": "@today+6",
+        "TARGET_EFFORT": 8
+      },
+      {
+        "ID": "70",
+        "DEPENDS_ON": "30",
+        "TITLE": "Schedule the production cutover and train the operators",
+        "DESCRIPTION": "Define the cutover lot, update the line schedule and train the operators on the new locating feature.",
+        "PRIORITY": "2 / Medium",
+        "ASSIGNEE": "$planner",
+        "TARGET_START_DATE": "@today+12",
+        "TARGET_COMPLETION_DATE": "@today+16",
+        "TARGET_EFFORT": 8
+      },
+      {
+        "ID": "80",
+        "DEPENDS_ON": "70",
+        "TITLE": "Release the new revision to production planning and ERP",
+        "DESCRIPTION": "Publish the effectivity date and release the new hub revision to planning and ERP.",
+        "PRIORITY": "2 / Medium",
+        "ASSIGNEE": "$planner",
+        "TARGET_START_DATE": "@today+16",
+        "TARGET_COMPLETION_DATE": "@today+18",
+        "TARGET_EFFORT": 4
+      }
+    ],
+    "tasks": [
+      {
+        "match": "Update the hub design",
+        "fields": {
+          "ASSIGNEE": "$engineer",
+          "NEW_STATUS_UPDATE": "New hub design is finished and checked in.",
+          "COMPLETION_REMARKS": "Hub redesigned with an H7 bore and a locating feature. Drawing released for review.",
+          "FOLLOWUP_DATE": "@today+3",
+          "IMAGE_1": {
+            "generate": {
+              "type": "comparison",
+              "title": "Released hub design",
+              "beforeLabel": "CURRENT DRAWING",
+              "afterLabel": "NEW DESIGN",
+              "rows": [
+                {
+                  "label": "Bore tolerance",
+                  "before": 0.1,
+                  "after": 0.021,
+                  "unit": "mm"
+                },
+                {
+                  "label": "Hole position tolerance",
+                  "before": 0.5,
+                  "after": 0.15,
+                  "unit": "mm"
+                },
+                {
+                  "label": "Locating features",
+                  "before": 0,
+                  "after": 2,
+                  "unit": "pcs"
+                }
+              ]
+            }
+          },
+          "IMAGE_1_COMMENT": "Released design values",
+          "IMAGE_2": {
+            "generate": {
+              "type": "closed-loop",
+              "highlight": "co"
+            }
+          },
+          "IMAGE_2_COMMENT": "Where this change order sits in the closed loop"
+        },
+        "transitions": [
+          {
+            "name": "Acknowledge",
+            "comment": "I take care of the hub redesign"
+          },
+          {
+            "name": "Submit for review",
+            "comment": "Design is updated and ready for the BOM change, please review"
+          },
+          {
+            "name": "Approve & Finish Task",
+            "comment": "Reviewed and approved",
+            "as": "$approver"
+          }
+        ]
+      },
+      {
+        "match": "Update the EBOM",
+        "fields": {
+          "ASSIGNEE": "$engineer",
+          "NEW_STATUS_UPDATE": "Started the BOM update with the new hub revision."
+        },
+        "transitions": [
+          {
+            "name": "Acknowledge",
+            "comment": "Got it, starting the EBOM update"
+          }
+        ]
+      },
+      {
+        "match": "Update the MBOM",
+        "fields": {
+          "ASSIGNEE": "$planner"
+        }
+      },
+      {
+        "match": "Qualify the supplier tooling",
+        "fields": {
+          "ASSIGNEE": "$quality"
+        }
+      },
+      {
+        "match": "Update the inspection plan",
+        "fields": {
+          "ASSIGNEE": "$quality"
+        }
+      },
+      {
+        "match": "Plan rework or scrap",
+        "fields": {
+          "ASSIGNEE": "$planner"
+        }
+      },
+      {
+        "match": "Schedule the production cutover",
+        "fields": {
+          "ASSIGNEE": "$planner"
+        }
+      },
+      {
+        "match": "Release the new revision",
+        "fields": {
+          "ASSIGNEE": "$planner"
+        }
+      }
+    ],
+    "stages": [
+      {
+        "fields": {
+          "TITLE": "Tighten fan hub bore tolerance and re-reference mounting pattern",
+          "DESCRIPTION": "Implement the design change that came out of the CAPA: H7 hub bore, mounting holes referenced to the bore axis, and a new locating feature.",
+          "CHANGE_REASON": "Quality issue confirmed by the CAPA and approved by the change control board",
+          "CHANGE_REASON_CODE": "Quality Issue",
+          "AFFECTED_PRODUCT": "$product",
+          "AFFECTED_ITEM": "$component",
+          "AFFECTED_QUANTITY": "24",
+          "RISKS": "Supplier tooling lead time can delay the first lot with the new hub.",
+          "ROOT_CAUSE": "Drawing tolerance on the hub bore is too wide and the mounting holes are located from a non-datum surface.",
+          "ROOT_CAUSE_CODE": "Design Issue",
+          "SUPPLIER_INVOLVED": "$supplier",
+          "CUSTOMER_IMPACTED": "None",
+          "CUSTOMER_APPROVAL_REQUIRED": "No",
+          "FOLLOWUP_DATE": "@today+7",
+          "FOLLOWUP_COMMENTS": "Check progress of the BOM update",
+          "START_DATE": "@today",
+          "CHANGE_TEMPLATE": "$template",
+          "PRIORITY": "1 / High",
+          "CHANGE_START_DATE": "@today"
+        },
+        "transition": "Initiate Tasks",
+        "comment": "Proceed as agreed in the CCB meeting",
+        "runTasks": true,
+        "await": {
+          "state": "Perform Change"
+        },
+        "id": "initiate-co-tasks",
+        "taskPlan": true
+      }
+    ],
+    "as": "$approver"
+  }
+}

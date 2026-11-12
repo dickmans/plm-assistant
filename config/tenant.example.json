@@ -1,0 +1,7 @@
+{
+  "tenant": "yourtenantname",
+  "clientId": "your-aps-client-id",
+  "port": 8090,
+  "ssaClientId": "optional: Server-to-Server app client id, only for impersonation",
+  "ssaClientSecret": "optional: Server-to-Server app client secret, only for impersonation"
+}

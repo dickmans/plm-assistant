@@ -1,0 +1,843 @@
+{
+  "_comment": "Example for the Rooftop Chiller of the demo tenant. Copy, then replace ALL content (see SKILL.md). Keys are letters, digits and dashes; fields use Fusion Manage field IDs.",
+  "name": "rooftop-chiller-requirements",
+  "vars": {
+    "product": "/api/v3/workspaces/95/items/14384"
+  },
+  "spec": {
+    "fields": {
+      "TITLE": "Rooftop chiller 5-2000 product requirements specification",
+      "DESCRIPTION": [
+        "Product requirements specification for the modular rooftop chiller platform (5 to 2000 kW class).",
+        "Covers performance, reliability and safety, and installation, service and compliance for commercial building applications.",
+        "Basis for design, validation planning and the release of the engineering BOM."
+      ],
+      "GROUP_NAME": "Engineering",
+      "BUSINESS_UNIT": "Building products",
+      "CUSTOMER": "Commercial HVAC platform (internal)",
+      "PROJECT": "/api/v3/workspaces/86/items/16133",
+      "INTERNAL_APPROVERS": [
+        "@me"
+      ],
+      "EXTERNAL_APPROVERS": [
+        "@me"
+      ],
+      "FILENAME_1": "Chiller platform market requirements.pdf",
+      "FILE_VERSION_1": "v2.1",
+      "FILE_DESCRIPTION_1": "Market and customer needs for the rooftop segment",
+      "FILE_DATE_1": "@today-60",
+      "FILE_SENT_BY_1": "Product management",
+      "FILE_LINK_1": "https://www.ashrae.org/technical-resources",
+      "FILENAME_2": "EN 14511 test conditions summary.pdf",
+      "FILE_VERSION_2": "v1.0",
+      "FILE_DESCRIPTION_2": "Rating conditions for air conditioners and liquid chilling packages",
+      "FILE_DATE_2": "@today-45",
+      "FILE_SENT_BY_2": "Quality",
+      "FILE_LINK_2": "https://www.cencenelec.eu/",
+      "FILENAME_3": "F-gas and PED compliance checklist.xlsx",
+      "FILE_VERSION_3": "v0.9",
+      "FILE_DESCRIPTION_3": "Regulatory checklist for refrigerant and pressure equipment",
+      "FILE_DATE_3": "@today-30",
+      "FILE_SENT_BY_3": "Regulatory affairs",
+      "FILE_LINK_3": "https://www.iec.ch/",
+      "FILENAME_4": "Competitor benchmark.pptx",
+      "FILE_VERSION_4": "v1.3",
+      "FILE_DESCRIPTION_4": "Capacity, efficiency and sound benchmark of three competitors",
+      "FILE_DATE_4": "@today-21",
+      "FILE_SENT_BY_4": "Marketing",
+      "FILE_LINK_4": "https://www.eurovent-certification.com/",
+      "FILENAME_5": "Field service lessons learned.docx",
+      "FILE_VERSION_5": "v1.0",
+      "FILE_DESCRIPTION_5": "Service findings from the previous generation",
+      "FILE_DATE_5": "@today-14",
+      "FILE_SENT_BY_5": "Service",
+      "FILE_LINK_5": "https://www.ul.com/"
+    },
+    "topLevel": {
+      "DESCRIPTION": "Top level requirement of the rooftop chiller platform: the complete set of customer, performance, safety and service needs.",
+      "SOURCE": "Product Management",
+      "COMMENTS": "Root of the requirements structure. Connected to the product record.",
+      "KEYWORDS": "chiller, rooftop, platform, requirements"
+    },
+    "decisions": [
+      {
+        "DATE": "@today-50",
+        "DECISION": "Use R-32 as the primary refrigerant",
+        "RATIONALE": "Lower global warming potential than R-410A and compatible with the planned F-gas phase-down; costs for A2L safety measures accepted."
+      },
+      {
+        "DATE": "@today-40",
+        "DECISION": "Rate performance at EN 14511 conditions",
+        "RATIONALE": "Matches customer tender documents and allows Eurovent certification."
+      },
+      {
+        "DATE": "@today-28",
+        "DECISION": "Sound target 78 dB(A) at 10 m",
+        "RATIONALE": "Competitor benchmark shows 80 dB(A); a lower value is a differentiator for rooftop sites near offices."
+      }
+    ]
+  },
+  "requirements": [
+    {
+      "key": "perf",
+      "title": "Performance",
+      "fields": {
+        "DESCRIPTION": "Thermal and acoustic performance the chiller must deliver at rated conditions.",
+        "SOURCE": "Product Management",
+        "TYPE": "Sub Level",
+        "KEYWORDS": "performance, capacity, efficiency, sound",
+        "COMMENTS": "Level 1 group for everything that is measured on the test bench.",
+        "PRIORITY": "1 / High",
+        "RISK": "2 / Med",
+        "DIFFICULTY": "2 / Med",
+        "PRIORITY_COMMENTS": "Primary buying criterion in tenders.",
+        "RISK_COMMENTS": "Efficiency and sound pull in different directions.",
+        "DIFFICULTY_COMMENTS": "Needs coordinated fan and heat exchanger design.",
+        "IMAGE_1": {
+          "generate": {
+            "type": "card",
+            "title": "Performance targets",
+            "subtitle": "Rooftop chiller platform",
+            "lines": [
+              "## Rated conditions",
+              "Cooling capacity 500 kW",
+              "EER 3.4 or better",
+              "Sound power 78 dB(A) at 10 m"
+            ],
+            "badge": {
+              "text": "GROUP",
+              "color": "blue"
+            }
+          }
+        },
+        "REMARKS_IMAGE_1": "Summary of the performance targets."
+      },
+      "children": [
+        {
+          "key": "perf-cap",
+          "title": "Cooling capacity",
+          "fields": {
+            "DESCRIPTION": "The chiller delivers 500 kW cooling capacity at 35 degrees C ambient air and 7 degrees C leaving water temperature.",
+            "SOURCE": "Customer",
+            "TYPE": "Functional",
+            "KEYWORDS": "capacity, kW, rating",
+            "COMMENTS": "Rated at EN 14511 conditions.",
+            "PRIORITY": "1 / High",
+            "RISK": "2 / Med",
+            "DIFFICULTY": "2 / Med",
+            "PRIORITY_COMMENTS": "Defines the model size.",
+            "RISK_COMMENTS": "Capacity drops at high ambient; derating curve needed.",
+            "DIFFICULTY_COMMENTS": "Compressor and heat exchanger sizing.",
+            "LABOR_COST": 38000,
+            "MATERIAL_COST": 52000,
+            "TOOLING_COST": 12000,
+            "EFFORT": 120,
+            "TEST_PROCEDURE": "Operate the chiller at full load on the climate test bench at EN 14511 conditions and record cooling output for 60 minutes.",
+            "EXPECTED_RESULT": "Measured capacity is at or above the rated value.",
+            "SUCCESS_CRITERIA": "Capacity of at least 495 kW (minus 1 percent) averaged over the last 30 minutes.",
+            "DEPENDENT_REQUIREMENTS": [
+              "perf-eff"
+            ],
+            "DEPENDENT_REQUIREMENTS_COMMENTS": "Efficiency is only meaningful at rated capacity.",
+            "IMAGE_1": {
+              "generate": {
+                "type": "bar-chart",
+                "title": "Capacity by ambient temperature (kW)",
+                "suffix": " kW",
+                "bars": [
+                  {
+                    "label": "25 C",
+                    "value": 560
+                  },
+                  {
+                    "label": "30 C",
+                    "value": 530
+                  },
+                  {
+                    "label": "35 C",
+                    "value": 500
+                  },
+                  {
+                    "label": "40 C",
+                    "value": 462
+                  }
+                ]
+              }
+            },
+            "REMARKS_IMAGE_1": "Design derating curve from the simulation."
+          },
+          "implementedBy": [
+            "9411-004",
+            "9411-012"
+          ],
+          "implementedByNote": "Heat exchanger and fan unit drive the capacity"
+        },
+        {
+          "key": "perf-eff",
+          "title": "Energy efficiency",
+          "fields": {
+            "DESCRIPTION": "The chiller reaches an energy efficiency ratio (EER) of at least 3.4 at rated conditions and an ESEER of at least 4.6.",
+            "SOURCE": "Marketing",
+            "TYPE": "Functional",
+            "KEYWORDS": "EER, ESEER, efficiency, energy",
+            "COMMENTS": "Needed for the top energy class in tenders.",
+            "PRIORITY": "1 / High",
+            "RISK": "1 / High",
+            "DIFFICULTY": "1 / High",
+            "PRIORITY_COMMENTS": "Customers evaluate lifecycle energy cost.",
+            "RISK_COMMENTS": "Prototype showed 3.1 in the first test.",
+            "DIFFICULTY_COMMENTS": "Requires variable speed fans and an electronic expansion valve.",
+            "LABOR_COST": 52000,
+            "MATERIAL_COST": 34000,
+            "TOOLING_COST": 8000,
+            "EFFORT": 160,
+            "TEST_PROCEDURE": "Measure electrical input power and cooling output at full load and at 75, 50 and 25 percent part load, then calculate EER and ESEER.",
+            "EXPECTED_RESULT": "EER and ESEER meet or exceed the specified values.",
+            "SUCCESS_CRITERIA": "EER at least 3.4 and ESEER at least 4.6, each with a measurement uncertainty below 3 percent.",
+            "DEPENDENT_REQUIREMENTS": [
+              "perf-cap"
+            ],
+            "DEPENDENT_REQUIREMENTS_COMMENTS": "Efficiency is measured at the rated capacity.",
+            "CONFLICTING_REQUIREMENTS": [
+              "perf-noise"
+            ],
+            "CONFLICTING_REQUIREMENTS_COMMENTS": "Higher fan speed improves efficiency but raises the sound level.",
+            "IMAGE_1": {
+              "generate": {
+                "type": "comparison",
+                "title": "Efficiency: first prototype versus target",
+                "beforeLabel": "Prototype",
+                "afterLabel": "Target",
+                "rows": [
+                  {
+                    "label": "EER",
+                    "before": 3.1,
+                    "after": 3.4,
+                    "unit": ""
+                  },
+                  {
+                    "label": "ESEER",
+                    "before": 4.2,
+                    "after": 4.6,
+                    "unit": ""
+                  }
+                ]
+              }
+            },
+            "REMARKS_IMAGE_1": "Gap between the first prototype and the target."
+          },
+          "implementedBy": [
+            "9411-004"
+          ],
+          "implementedByNote": "Heat exchanger bundle sets the approach temperature"
+        },
+        {
+          "key": "perf-noise",
+          "title": "Sound power level",
+          "fields": {
+            "DESCRIPTION": "The sound pressure level at 10 m free field distance does not exceed 78 dB(A) at full load.",
+            "SOURCE": "Sales",
+            "TYPE": "Non-Functional",
+            "KEYWORDS": "noise, dB(A), fan, vibration",
+            "COMMENTS": "Rooftop sites close to office space need quiet units.",
+            "PRIORITY": "2 / Med",
+            "RISK": "2 / Med",
+            "DIFFICULTY": "2 / Med",
+            "PRIORITY_COMMENTS": "Differentiator against the benchmark at 80 dB(A).",
+            "RISK_COMMENTS": "Fan tonal noise is hard to predict.",
+            "DIFFICULTY_COMMENTS": "Fan blade design and vibration isolation.",
+            "LABOR_COST": 24000,
+            "MATERIAL_COST": 9000,
+            "TOOLING_COST": 3000,
+            "EFFORT": 70,
+            "TEST_PROCEDURE": "Measure sound pressure at 10 m according to ISO 3744 with the unit at full load and at night mode.",
+            "EXPECTED_RESULT": "Sound pressure stays below the limit in all operating modes.",
+            "SUCCESS_CRITERIA": "At most 78 dB(A) at full load and 72 dB(A) in night mode.",
+            "CONFLICTING_REQUIREMENTS": [
+              "perf-eff"
+            ],
+            "CONFLICTING_REQUIREMENTS_COMMENTS": "Quiet fan operation limits airflow and therefore efficiency."
+          },
+          "implementedBy": [
+            "9411-163",
+            "9411-012"
+          ],
+          "implementedByNote": "Vibration absorber and fan unit decide the noise level"
+        }
+      ]
+    },
+    {
+      "key": "rel",
+      "title": "Reliability and safety",
+      "fields": {
+        "DESCRIPTION": "Requirements that keep people safe and the chiller running for its service life.",
+        "SOURCE": "Quality",
+        "TYPE": "Sub Level",
+        "KEYWORDS": "reliability, safety, refrigerant, durability",
+        "COMMENTS": "Level 1 group for safety and lifetime requirements.",
+        "PRIORITY": "1 / High",
+        "RISK": "1 / High",
+        "DIFFICULTY": "2 / Med",
+        "PRIORITY_COMMENTS": "Safety requirements are mandatory.",
+        "RISK_COMMENTS": "A2L refrigerant adds ignition risk handling.",
+        "DIFFICULTY_COMMENTS": "Needs coordinated mechanical and control measures.",
+        "IMAGE_1": {
+          "generate": {
+            "type": "card",
+            "title": "Safety first",
+            "subtitle": "Refrigerant and pressure safety",
+            "lines": [
+              "## Key measures",
+              "Leak tight below 3 g/year",
+              "Pressure relief per PED",
+              "15 year service life"
+            ],
+            "badge": {
+              "text": "SAFETY",
+              "color": "red"
+            }
+          }
+        },
+        "REMARKS_IMAGE_1": "Overview of the safety concept."
+      },
+      "children": [
+        {
+          "key": "rel-safe",
+          "title": "Refrigerant containment and pressure safety",
+          "fields": {
+            "DESCRIPTION": "The refrigerant circuit is leak tight and protected against overpressure.",
+            "SOURCE": "Engineering",
+            "TYPE": "Sub Level",
+            "KEYWORDS": "refrigerant, R-32, pressure, PED",
+            "COMMENTS": "Group of the safety requirements for the refrigerant circuit.",
+            "PRIORITY": "1 / High",
+            "RISK": "1 / High",
+            "DIFFICULTY": "2 / Med",
+            "PRIORITY_COMMENTS": "Mandatory by regulation.",
+            "RISK_COMMENTS": "Non compliance blocks market access.",
+            "DIFFICULTY_COMMENTS": "Needs certified components."
+          },
+          "children": [
+            {
+              "key": "rel-leak",
+              "title": "Leak tightness",
+              "fields": {
+                "DESCRIPTION": "The sealed refrigerant circuit loses less than 3 g of R-32 per year.",
+                "SOURCE": "Quality",
+                "TYPE": "Safety",
+                "KEYWORDS": "leak, F-gas, tightness, helium",
+                "COMMENTS": "Required for the F-gas leak check interval.",
+                "PRIORITY": "1 / High",
+                "RISK": "1 / High",
+                "DIFFICULTY": "2 / Med",
+                "PRIORITY_COMMENTS": "Regulatory requirement.",
+                "RISK_COMMENTS": "Brazed joints are the main leak risk.",
+                "DIFFICULTY_COMMENTS": "Joint design and brazing process control.",
+                "LABOR_COST": 18000,
+                "MATERIAL_COST": 6000,
+                "TOOLING_COST": 4000,
+                "EFFORT": 50,
+                "TEST_PROCEDURE": "Charge the circuit and test all joints with a helium sniffer, then run a pressure decay test for 24 hours.",
+                "EXPECTED_RESULT": "No detectable leakage at any joint.",
+                "SUCCESS_CRITERIA": "Leak rate below 3 g/year and no pressure decay above 0.5 percent.",
+                "DEPENDENT_REQUIREMENTS": [
+                  "rel-press"
+                ],
+                "DEPENDENT_REQUIREMENTS_COMMENTS": "Pressure relief components add joints that must be leak tested."
+              },
+              "implementedBy": [
+                "9411-112",
+                "9411-135"
+              ],
+              "implementedByNote": "Pipe spool and manifold assemblies carry the brazed joints"
+            },
+            {
+              "key": "rel-press",
+              "title": "Pressure relief protection",
+              "fields": {
+                "DESCRIPTION": "Pressure relief devices open before the maximum allowable pressure of 42 bar is exceeded.",
+                "SOURCE": "Engineering",
+                "TYPE": "Safety",
+                "KEYWORDS": "pressure, relief valve, PED, 42 bar",
+                "COMMENTS": "Category II equipment under the Pressure Equipment Directive.",
+                "PRIORITY": "1 / High",
+                "RISK": "1 / High",
+                "DIFFICULTY": "3 / Low",
+                "PRIORITY_COMMENTS": "Mandatory safety function.",
+                "RISK_COMMENTS": "Wrong set pressure is a certification finding.",
+                "DIFFICULTY_COMMENTS": "Standard certified relief valves are available.",
+                "LABOR_COST": 9000,
+                "MATERIAL_COST": 7500,
+                "TOOLING_COST": 1500,
+                "EFFORT": 30,
+                "TEST_PROCEDURE": "Raise the high side pressure with the compressor blocked and record the opening pressure of the relief valve.",
+                "EXPECTED_RESULT": "The valve opens at its set pressure and reseats.",
+                "SUCCESS_CRITERIA": "Opening pressure between 41 and 42 bar, reseat pressure above 36 bar."
+              },
+              "implementedBy": [
+                "9411-SP-012"
+              ],
+              "implementedByNote": "Valve assembly provides the relief function"
+            }
+          ]
+        },
+        {
+          "key": "rel-life",
+          "title": "Service life",
+          "fields": {
+            "DESCRIPTION": "The chiller reaches a design service life of 15 years with scheduled maintenance.",
+            "SOURCE": "Customer",
+            "TYPE": "Non-Functional",
+            "KEYWORDS": "durability, service life, corrosion, vibration",
+            "COMMENTS": "Commercial buildings expect a long asset life.",
+            "PRIORITY": "2 / Med",
+            "RISK": "2 / Med",
+            "DIFFICULTY": "2 / Med",
+            "PRIORITY_COMMENTS": "Drives total cost of ownership.",
+            "RISK_COMMENTS": "Coastal sites increase the corrosion risk.",
+            "DIFFICULTY_COMMENTS": "Needs coated coils and a robust frame.",
+            "LABOR_COST": 28000,
+            "MATERIAL_COST": 21000,
+            "TOOLING_COST": 6000,
+            "EFFORT": 90,
+            "TEST_PROCEDURE": "Run an accelerated life test with 2000 hours of thermal cycling, salt spray exposure and vibration.",
+            "EXPECTED_RESULT": "No functional failure or structural damage after the test.",
+            "SUCCESS_CRITERIA": "No leaks, no cracked welds and performance within 3 percent of the initial values.",
+            "IMAGE_1": {
+              "generate": {
+                "type": "trend-chart",
+                "title": "Frame strain during life test",
+                "points": [
+                  0.8,
+                  0.9,
+                  0.95,
+                  1.1,
+                  1.3,
+                  1.45,
+                  1.6
+                ],
+                "labels": [
+                  "0",
+                  "250",
+                  "500",
+                  "750",
+                  "1000",
+                  "1500",
+                  "2000"
+                ],
+                "usl": 1.5,
+                "unit": " mm/m",
+                "xLabel": "Test hours"
+              }
+            },
+            "REMARKS_IMAGE_1": "Strain exceeded the limit after 1500 hours."
+          },
+          "implementedBy": [
+            "9411-030",
+            "9411-015"
+          ],
+          "implementedByNote": "Supporting framework and cross members carry the life load"
+        }
+      ]
+    },
+    {
+      "key": "svc",
+      "title": "Installation, service and compliance",
+      "fields": {
+        "DESCRIPTION": "Needs of the installers, service technicians and approval bodies.",
+        "SOURCE": "Manufacturing",
+        "TYPE": "Sub Level",
+        "KEYWORDS": "installation, service, compliance, CE",
+        "COMMENTS": "Level 1 group for the lifecycle and regulatory requirements.",
+        "PRIORITY": "2 / Med",
+        "RISK": "3 / Low",
+        "DIFFICULTY": "3 / Low",
+        "PRIORITY_COMMENTS": "Important for field acceptance.",
+        "RISK_COMMENTS": "Mostly known practice from earlier generations.",
+        "DIFFICULTY_COMMENTS": "Mainly documentation and labelling work."
+      },
+      "children": [
+        {
+          "key": "svc-ins",
+          "title": "Installation and commissioning",
+          "fields": {
+            "DESCRIPTION": "Two technicians can install and commission the chiller on a roof within one working day.",
+            "SOURCE": "Sales",
+            "TYPE": "Process",
+            "KEYWORDS": "installation, crane, commissioning",
+            "COMMENTS": "Based on the field feedback of the previous generation.",
+            "PRIORITY": "2 / Med",
+            "RISK": "3 / Low",
+            "DIFFICULTY": "3 / Low",
+            "PRIORITY_COMMENTS": "Reduces installation cost for customers.",
+            "RISK_COMMENTS": "Roof access varies by site.",
+            "DIFFICULTY_COMMENTS": "Lifting points and quick connectors are standard parts.",
+            "LABOR_COST": 12000,
+            "MATERIAL_COST": 4000,
+            "TOOLING_COST": 1000,
+            "EFFORT": 40,
+            "TEST_PROCEDURE": "Install a pre-series unit with two technicians following the installation manual and time the work.",
+            "EXPECTED_RESULT": "Installation and commissioning finish within one shift.",
+            "SUCCESS_CRITERIA": "Total time below 8 hours including functional test."
+          },
+          "implementedBy": [
+            "9411-001"
+          ],
+          "implementedByNote": "The exchanger module defines the lifting and connection points"
+        },
+        {
+          "key": "svc-reg",
+          "title": "Regulatory compliance",
+          "fields": {
+            "DESCRIPTION": "The chiller carries the CE mark and complies with the F-gas regulation, the Pressure Equipment Directive and the Ecodesign requirements.",
+            "SOURCE": "Quality",
+            "TYPE": "Process",
+            "KEYWORDS": "CE, F-gas, PED, ecodesign",
+            "COMMENTS": "Conformity assessment is run by regulatory affairs.",
+            "PRIORITY": "1 / High",
+            "RISK": "2 / Med",
+            "DIFFICULTY": "3 / Low",
+            "PRIORITY_COMMENTS": "No sales without conformity.",
+            "RISK_COMMENTS": "Notified body lead time can delay the launch.",
+            "DIFFICULTY_COMMENTS": "Documentation effort, no new technology.",
+            "LABOR_COST": 20000,
+            "MATERIAL_COST": 2000,
+            "TOOLING_COST": 0,
+            "EFFORT": 60,
+            "TEST_PROCEDURE": "Review the technical file against the checklist of all applicable directives.",
+            "EXPECTED_RESULT": "All checklist items are closed.",
+            "SUCCESS_CRITERIA": "Declaration of conformity is signed and the technical file is complete.",
+            "DEPENDENT_REQUIREMENTS": [
+              "rel-leak",
+              "rel-press"
+            ],
+            "DEPENDENT_REQUIREMENTS_COMMENTS": "Safety evidence is part of the technical file."
+          }
+        }
+      ]
+    }
+  ],
+  "approvals": [
+    {
+      "id": "ra-perf",
+      "node": "perf",
+      "fields": {
+        "TITLE": "Release of performance requirements",
+        "DESCRIPTION": "Approval of the performance requirement group (capacity, efficiency, sound level) as the basis for detailed design.",
+        "CHANGE_REASON": "Initial release",
+        "REMARKS": "Targets are aligned with the competitor benchmark.",
+        "INTERNAL_APPROVERS": [
+          "@me"
+        ],
+        "TARGET_DATE_INTERNAL_REVIEW": "@today+3"
+      },
+      "comments": {
+        "submit": "Performance targets reviewed with product management, please approve.",
+        "approve": "Targets accepted for detailed design."
+      }
+    },
+    {
+      "id": "ra-rel",
+      "node": "rel",
+      "external": true,
+      "fields": {
+        "TITLE": "Release of reliability and safety requirements",
+        "DESCRIPTION": "Approval of the safety and service life requirements including the customer review.",
+        "CHANGE_REASON": "Initial release",
+        "REMARKS": "Safety requirements reviewed with the notified body.",
+        "INTERNAL_APPROVERS": [
+          "@me"
+        ],
+        "TARGET_DATE_INTERNAL_REVIEW": "@today+4",
+        "EXTERNAL_APPROVERS": [
+          "@me"
+        ],
+        "TARGET_DATE_EXTERNAL_REVIEW": "@today+12"
+      },
+      "comments": {
+        "submit": "Safety requirements ready for review.",
+        "external": "Please review with the notified body.",
+        "externalApprove": "Accepted by the external reviewer."
+      }
+    }
+  ],
+  "validations": [
+    {
+      "key": "val-perf",
+      "title": "Performance validation",
+      "fields": {
+        "TYPE": "Initial",
+        "EQUIPMENT_REQUIRED": [
+          "Climate test bench",
+          "Power analyzer",
+          "Calibrated flow meter"
+        ],
+        "SPECIAL_INSTRUCTIONS": "Run at EN 14511 conditions. Keep ambient within plus or minus 0.5 K.",
+        "ASSIGNEE_1": "Eric Edwards",
+        "TARGET_DATE_1": "@today-20",
+        "ASSIGNEE_2": "Mike Meyers",
+        "TARGET_DATE_2": "@today-12",
+        "ASSIGNEE_3": "Selena Sanders",
+        "TARGET_DATE_3": "@today-7",
+        "IMAGE_1": {
+          "generate": {
+            "type": "card",
+            "title": "Test setup",
+            "subtitle": "Climate test bench",
+            "lines": [
+              "## Instrumentation",
+              "Power analyzer on supply",
+              "Flow and temperature at water side",
+              "Microphones at 10 m"
+            ],
+            "badge": {
+              "text": "SETUP",
+              "color": "blue"
+            }
+          }
+        },
+        "IMAGE_1_REMARKS": "Setup of the performance test."
+      },
+      "executionFields": {
+        "TEST_RUN_IMAGE_1": {
+          "generate": {
+            "type": "measurement-chart",
+            "title": "Performance test results",
+            "rows": [
+              {
+                "label": "Capacity",
+                "nominal": 500,
+                "lo": 5,
+                "hi": 40,
+                "actual": 503,
+                "unit": "kW"
+              },
+              {
+                "label": "EER",
+                "nominal": 3.4,
+                "lo": 0,
+                "hi": 0.6,
+                "actual": 3.15,
+                "unit": ""
+              },
+              {
+                "label": "Sound at 10 m",
+                "nominal": 76,
+                "lo": 4,
+                "hi": 2,
+                "actual": 77.1,
+                "unit": "dB(A)"
+              }
+            ]
+          }
+        },
+        "TEST_RUN_IMAGE_1_REMARKS": "Capacity and sound met the criteria; EER fell short of 3.4."
+      },
+      "steps": [
+        {
+          "requirement": "perf-cap",
+          "RESULT": "Success",
+          "COMMENTS": "Capacity of 503 kW averaged over 30 minutes, within the success criterion."
+        },
+        {
+          "requirement": "perf-eff",
+          "RESULT": "Failed",
+          "COMMENTS": "EER measured 3.15 against the target of 3.4. Part load behavior also below target; fan control tuning is needed."
+        },
+        {
+          "requirement": "perf-noise",
+          "RESULT": "Success",
+          "COMMENTS": "Sound pressure 77.1 dB(A) at full load and 71.5 dB(A) in night mode."
+        }
+      ],
+      "comments": {
+        "Assign": "Test plan and bench booking confirmed.",
+        "Finish Preparation": "Unit installed and instrumented, ready to run.",
+        "Finish Execution": "All three test runs completed.",
+        "Close": "Performance validation closed. Efficiency needs a repetition after the fan control update."
+      },
+      "closing": {
+        "REPETITION_REQUIRED": "Yes",
+        "REPETITION_DATE": "@today+14"
+      },
+      "repeat": {
+        "end": "Completed",
+        "fields": {
+          "ASSIGNEE_1": "Eric Edwards",
+          "TARGET_DATE_1": "@today-3",
+          "ASSIGNEE_2": "Mike Meyers",
+          "TARGET_DATE_2": "@today-2",
+          "ASSIGNEE_3": "Selena Sanders",
+          "TARGET_DATE_3": "@today-1"
+        },
+        "steps": [
+          {
+            "requirement": "perf-eff",
+            "RESULT": "Success",
+            "COMMENTS": "EER 3.46 and ESEER 4.7 after the fan control update, both within the success criterion."
+          }
+        ],
+        "comments": {
+          "Assign": "Repetition for the efficiency requirement.",
+          "Finish Preparation": "Updated fan control software installed.",
+          "Finish Execution": "Efficiency test repeated.",
+          "Close": "Efficiency target reached."
+        }
+      }
+    },
+    {
+      "key": "val-life",
+      "title": "Reliability validation",
+      "fields": {
+        "TYPE": "Final",
+        "EQUIPMENT_REQUIRED": [
+          "Thermal cycling chamber",
+          "Salt spray chamber",
+          "Vibration table"
+        ],
+        "SPECIAL_INSTRUCTIONS": "Run the accelerated life test sequence of 2000 hours without interruption.",
+        "ASSIGNEE_1": "Selena Sanders",
+        "TARGET_DATE_1": "@today-25",
+        "ASSIGNEE_2": "Mike Meyers",
+        "TARGET_DATE_2": "@today-10",
+        "ASSIGNEE_3": "Eric Edwards",
+        "TARGET_DATE_3": "@today-5"
+      },
+      "executionFields": {
+        "TEST_RUN_IMAGE_1": {
+          "generate": {
+            "type": "trend-chart",
+            "title": "Frame strain during life test",
+            "points": [
+              0.8,
+              0.9,
+              0.95,
+              1.1,
+              1.3,
+              1.45,
+              1.6
+            ],
+            "labels": [
+              "0",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "1500",
+              "2000"
+            ],
+            "usl": 1.5,
+            "unit": " mm/m",
+            "xLabel": "Test hours"
+          }
+        },
+        "TEST_RUN_IMAGE_1_REMARKS": "Strain limit exceeded after about 1700 hours."
+      },
+      "steps": [
+        {
+          "requirement": "rel-leak",
+          "RESULT": "Success",
+          "COMMENTS": "Helium test found no leaks; pressure decay 0.2 percent over 24 hours."
+        },
+        {
+          "requirement": "rel-life",
+          "RESULT": "Failed",
+          "COMMENTS": "A weld on the middle support beam cracked after 1700 hours of vibration. Frame needs reinforcement."
+        }
+      ],
+      "comments": {
+        "Assign": "Life test sequence released.",
+        "Finish Preparation": "Test chambers loaded.",
+        "Finish Execution": "Life test stopped after the weld crack.",
+        "Close": "Service life not demonstrated, repetition after the frame update."
+      },
+      "closing": {
+        "REPETITION_REQUIRED": "Yes",
+        "REPETITION_DATE": "@today+30"
+      },
+      "repeat": {
+        "end": "Execution",
+        "fields": {
+          "ASSIGNEE_1": "Selena Sanders",
+          "TARGET_DATE_1": "@today+2",
+          "ASSIGNEE_2": "Mike Meyers",
+          "TARGET_DATE_2": "@today+25",
+          "ASSIGNEE_3": "Eric Edwards",
+          "TARGET_DATE_3": "@today+30"
+        },
+        "steps": [
+          {
+            "requirement": "rel-life"
+          }
+        ],
+        "comments": {
+          "Assign": "Repetition with the reinforced frame.",
+          "Finish Preparation": "Reinforced frame installed in the chamber."
+        }
+      }
+    },
+    {
+      "key": "val-safety",
+      "title": "Pressure safety validation",
+      "fields": {
+        "TYPE": "Initial",
+        "EQUIPMENT_REQUIRED": [
+          "Pressure test rig",
+          "Calibrated pressure transducers"
+        ],
+        "SPECIAL_INSTRUCTIONS": "Wear face protection. Test only with nitrogen.",
+        "ASSIGNEE_1": "Mike Meyers",
+        "TARGET_DATE_1": "@today-6",
+        "ASSIGNEE_2": "Selena Sanders",
+        "TARGET_DATE_2": "@today-2",
+        "ASSIGNEE_3": "Eric Edwards",
+        "TARGET_DATE_3": "@today+5"
+      },
+      "steps": [
+        {
+          "requirement": "rel-press",
+          "RESULT": "Success",
+          "COMMENTS": "Relief valve opened at 41.6 bar and reseated at 37.2 bar."
+        },
+        {
+          "requirement": "rel-leak",
+          "RESULT": "Success",
+          "COMMENTS": "No leaks after the pressure cycle."
+        }
+      ],
+      "comments": {
+        "Assign": "Rig booked.",
+        "Finish Preparation": "Rig ready.",
+        "Finish Execution": "Tests finished, report in progress."
+      },
+      "end": "Reporting"
+    },
+    {
+      "key": "val-install",
+      "title": "Installation validation",
+      "fields": {
+        "TYPE": "Initial",
+        "EQUIPMENT_REQUIRED": [
+          "Pre-series unit",
+          "Lifting equipment"
+        ],
+        "SPECIAL_INSTRUCTIONS": "Time the work with a stopwatch and note every wait.",
+        "ASSIGNEE_1": "Eric Edwards",
+        "TARGET_DATE_1": "@today+7",
+        "ASSIGNEE_2": "Mike Meyers",
+        "TARGET_DATE_2": "@today+14",
+        "ASSIGNEE_3": "Selena Sanders",
+        "TARGET_DATE_3": "@today+18"
+      },
+      "steps": [
+        {
+          "requirement": "svc-ins"
+        },
+        {
+          "requirement": "svc-reg"
+        }
+      ],
+      "end": "Planning"
+    }
+  ]
+}

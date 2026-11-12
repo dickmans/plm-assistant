@@ -1,0 +1,14 @@
+{
+  "name": "plm-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-driven maintenance utilities for an Autodesk Fusion Manage tenant (Claude Code skills + local Express server)",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/ppm.test.js test/closedloop.test.js test/fillempty.test.js test/requirements.test.js test/timelines.test.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

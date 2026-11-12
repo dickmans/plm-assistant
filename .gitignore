@@ -1,0 +1,8 @@
+node_modules/
+.data/
+work/
+config/tenant.json
+config/ppm-mapping.json
+.DS_Store
+.env
+.env.*
